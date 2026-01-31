@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 26th Birthday! 🎂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 100%;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Candle Section */
+        .candle-section {
+            transition: opacity 0.5s ease;
+        }
+
+        .candle-section.hidden {
+            display: none;
+        }
+
+        .candle {
+            width: 60px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .wick {
+            width: 4px;
+            height: 20px;
+            background: #333;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, #ffeb3b 0%, #ff9800 50%, #ff5722 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.3s infinite alternate;
+            box-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff9800;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scaleY(1); }
+            100% { transform: translateX(-50%) scaleY(0.95); }
+        }
+
+        .instruction {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            padding: 0 10px;
+        }
+
+        .blow-indicator {
+            width: 100px;
+            height: 100px;
+            border: 4px solid white;
+            border-radius: 50%;
+            margin: 30px auto;
+            position: relative;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .blow-indicator::after {
+            content: '🎤';
+            font-size: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .blow-indicator.active {
+            animation: pulse 0.5s ease;
+            background: rgba(255,255,255,0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .start-button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(0,0,0,0.4);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
+        /* Cake Section */
+        .cake-section {
+            display: none;
+        }
+
+        .cake-section.show {
+            display: block;
+        }
+
+        .cake-image-container {
+            margin: 0 auto 20px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+
+        .cake-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: zoomIn 0.8s ease;
+            display: block;
+        }
+
+        /* Fallback for broken images */
+        .image-error {
+            display: none;
+            background: rgba(255,255,255,0.2);
+            padding: 30px;
+            border-radius: 20px;
+            color: white;
+            font-size: 24px;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .birthday-message {
+            color: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease 0.5s both;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 25px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .birthday-message h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+
+        .birthday-message p {
+            font-size: 20px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Next Button */
+        .next-button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.5s ease both;
+        }
+
+        .next-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(0,0,0,0.4);
+        }
+
+        .next-button:active {
+            transform: translateY(0);
+        }
+
+        /* Slide Pages */
+        .slide-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px 10px 100px 10px;
+            max-width: 100%;
+        }
+
+        .slide-image-container {
+            max-width: 500px;
+            width: 90%;
+            margin: 10px auto 20px;
+            position: relative;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: auto;
+            max-height: 50vh;
+            object-fit: contain;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .slide-message {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            margin: 10px auto 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .slide-message p {
+            color: white;
+            font-size: 18px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(102, 126, 234, 0.9);
+            padding: 15px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(0,0,0,0.4);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        /* Page Indicators */
+        .page-indicator {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: fall 3s linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Status Message */
+        .status-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .status-message.show {
+            opacity: 1;
+        }
+
+        .status-message.success {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .status-message.error {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        @media (max-width: 768px) {
+            .birthday-message h1 {
+                font-size: 28px;
+            }
+
+            .birthday-message p {
+                font-size: 16px;
+            }
+
+            .instruction {
+                font-size: 18px;
+            }
+
+            .slide-message p {
+                font-size: 16px;
+            }
+
+            .cake-image-container {
+                max-width: 300px;
+            }
+
+            .nav-buttons {
+                bottom: 10px;
+                padding: 10px 15px;
+            }
+
+            .nav-button {
+                padding: 8px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status-message" id="statusMessage"></div>
+
+    <div class="container">
+        <!-- Page 0: Candle & Cake -->
+        <div id="page0" class="page active">
+            <!-- Candle Section -->
+            <div class="candle-section" id="candleSection">
+                <h1 class="instruction">🎂 Make a wish and blow out the candle!</h1>
+                
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame" id="flame"></div>
+                </div>
+
+                <div class="blow-indicator" id="blowIndicator"></div>
+
+                <button class="start-button" id="startButton">Start Experience</button>
+            </div>
+
+            <!-- Cake Section (Hidden Initially) -->
+            <div class="cake-section" id="cakeSection">
+                <div class="cake-image-container">
+                    <img src="cake.jpg" alt="Birthday Cake" class="cake-image" id="cakeImage">
+                    <div class="image-error" id="cakeError">🎂 Happy Birthday! 🎂</div>
+                </div>
+                <div class="birthday-message">
+                    <h1>Happy 26th Birthday! 🎉</h1>
+                    <p>Wishing you a day filled with love, laughter, and all your favorite things!</p>
+                </div>
+                <button class="next-button" onclick="goToNextPage()">Continue to Memories →</button>
+            </div>
+        </div>
+
+        <!-- Slide Pages 1-7 -->
+        <div id="page1" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image1.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #1</div>
+                </div>
+                <div class="slide-message">
+                    <p>"Every year with you is a gift, and this one will be the best yet!"</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image2.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #2</div>
+                </div>
+                <div class="slide-message">
+                    <p>"26 looks amazing on you! Here's to new adventures and endless possibilities."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image3.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #3</div>
+                </div>
+                <div class="slide-message">
+                    <p>"May this year bring you closer to your dreams and fill your heart with joy!"</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page4" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image4.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #4</div>
+                </div>
+                <div class="slide-message">
+                    <p>"You make the world brighter just by being in it. Happy Birthday!"</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page5" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image5.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #5</div>
+                </div>
+                <div class="slide-message">
+                    <p>"Cheers to 26 years of awesomeness and many more to come!"</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page6" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image6.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #6</div>
+                </div>
+                <div class="slide-message">
+                    <p>"Life is a journey, and I'm so grateful you're on this path. Happy Birthday!"</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="goToNextPage()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page7" class="page">
+            <div class="slide-page">
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                </div>
+                <div class="slide-image-container">
+                    <img src="image7.jpg" alt="Beautiful Memory" class="slide-image" onerror="handleImageError(this)">
+                    <div class="image-error">📸 Memory #7</div>
+                </div>
+                <div class="slide-message">
+                    <p>"May each new year of your life be better than the last, not in numbers, but in how it feels."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="goToPrevPage()">← Back</button>
+                    <button class="nav-button" onclick="restartExperience()">🔄 Start Over</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioContext;
+        let analyser;
+        let microphone;
+        let dataArray;
+        let blowDetected = false;
+        let isListening = false;
+        let currentPage = 0;
+        const totalPages = 8;
+
+        const candleSection = document.getElementById('candleSection');
+        const cakeSection = document.getElementById('cakeSection');
+        const flame = document.getElementById('flame');
+        const blowIndicator = document.getElementById('blowIndicator');
+        const statusMessage = document.getElementById('statusMessage');
+        const startButton = document.getElementById('startButton');
+        const cakeImage = document.getElementById('cakeImage');
+
+        startButton.addEventListener('click', initAudio);
+
+        // Image error handling
+        cakeImage.onerror = function() {
+            console.error('Cake image failed to load: cake.jpg');
+            this.style.display = 'none';
+            document.getElementById('cakeError').style.display = 'block';
+        };
+        
+        cakeImage.onload = function() {
+            console.log('Cake image loaded successfully');
+        };
+
+        function handleImageError(img) {
+            console.error('Image failed to load:', img.src);
+            img.style.display = 'none';
+            img.nextElementSibling.style.display = 'block';
+        }
+
+        function goToNextPage() {
+            if (currentPage < totalPages - 1) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage++;
+                document.getElementById('page' + currentPage).classList.add('active');
+                window.scrollTo(0, 0);
+                console.log('Moving to page:', currentPage);
+            }
+        }
+
+        function goToPrevPage() {
+            if (currentPage > 0) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage--;
+                document.getElementById('page' + currentPage).classList.add('active');
+                window.scrollTo(0, 0);
+                console.log('Moving to page:', currentPage);
+            }
+        }
+
+        function restartExperience() {
+            document.getElementById('page' + currentPage).classList.remove('active');
+            currentPage = 0;
+            document.getElementById('page' + currentPage).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            cakeSection.classList.remove('show');
+            candleSection.classList.remove('hidden');
+            blowDetected = false;
+            isListening = false;
+            flame.style.opacity = '1';
+            flame.style.animation = 'flicker 0.3s infinite alternate';
+            startButton.style.display = 'block';
+            startButton.disabled = false;
+            startButton.textContent = 'Start Experience';
+        }
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (currentPage === 0) return;
+            
+            if (touchEndX < touchStartX - 50) {
+                goToNextPage();
+            }
+            if (touchEndX > touchStartX + 50) {
+                goToPrevPage();
+            }
+        }
+
+        async function initAudio() {
+            if (isListening) return;
+
+            try {
+                startButton.disabled = true;
+                startButton.textContent = 'Initializing...';
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Microphone not supported on this device');
+                }
+
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 512;
+                analyser.smoothingTimeConstant = 0.8;
+                
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    } 
+                });
+                
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+
+                isListening = true;
+                startButton.style.display = 'none';
+                showStatus('🎤 Listening... Blow into your mic!', 'success');
+                
+                setTimeout(() => {
+                    statusMessage.classList.remove('show');
+                }, 3000);
+
+                detectBlow();
+            } catch (err) {
+                console.error('Microphone access error:', err);
+                let errorMsg = 'Please allow microphone access and try again!';
+                
+                if (err.name === 'NotAllowedError') {
+                    errorMsg = '🔒 Microphone access denied. Please allow access in your browser settings.';
+                } else if (err.name === 'NotFoundError') {
+                    errorMsg = '🎤 No microphone found on this device.';
+                } else if (err.message.includes('not supported')) {
+                    errorMsg = '❌ Your browser doesn\'t support microphone access.';
+                }
+                
+                showStatus(errorMsg, 'error');
+                startButton.disabled = false;
+                startButton.textContent = 'Try Again';
+            }
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message show ' + type;
+        }
+
+        function detectBlow() {
+            if (blowDetected || !isListening) return;
+
+            analyser.getByteFrequencyData(dataArray);
+            
+            let sum = 0;
+            const lowFreqEnd = Math.floor(dataArray.length * 0.3);
+            
+            for (let i = 0; i < lowFreqEnd; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / lowFreqEnd;
+
+            if (average > 25) {
+                blowIndicator.classList.add('active');
+                setTimeout(() => blowIndicator.classList.remove('active'), 500);
+            }
+
+            if (average > 45 && !blowDetected) {
+                blowDetected = true;
+                blowOutCandle();
+            }
+
+            requestAnimationFrame(detectBlow);
+        }
+
+        function blowOutCandle() {
+            showStatus('🌬️ Perfect! Watch the magic happen...', 'success');
+            
+            if (microphone && microphone.mediaStream) {
+                microphone.mediaStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioContext) {
+                audioContext.close();
+            }
+
+            flame.style.animation = 'none';
+            flame.style.opacity = '0';
+            flame.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                candleSection.classList.add('hidden');
+                cakeSection.classList.add('show');
+                createConfetti();
+                statusMessage.classList.remove('show');
+            }, 800);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1e2', '#ff9ff3'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-20px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = '0s';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (microphone && microphone.mediaStream) {
+                microphone.mediaStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
