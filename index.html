@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 26th Birthday! 🎂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Candle Section */
+        .candle-section {
+            transition: opacity 0.5s ease;
+        }
+
+        .candle-section.hidden {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .candle {
+            width: 60px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff6b6b 0%, #ee5a6f 100%);
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .wick {
+            width: 4px;
+            height: 20px;
+            background: #333;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, #ffeb3b 0%, #ff9800 50%, #ff5722 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.3s infinite alternate;
+            box-shadow: 0 0 20px #ffeb3b, 0 0 40px #ff9800;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scaleY(1); }
+            100% { transform: translateX(-50%) scaleY(0.95); }
+        }
+
+        .instruction {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            padding: 0 10px;
+        }
+
+        .blow-indicator {
+            width: 100px;
+            height: 100px;
+            border: 4px solid white;
+            border-radius: 50%;
+            margin: 30px auto;
+            position: relative;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .blow-indicator::after {
+            content: '🎤';
+            font-size: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .blow-indicator.active {
+            animation: pulse 0.5s ease;
+            background: rgba(255,255,255,0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .start-button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(0,0,0,0.4);
+        }
+
+        .start-button:active {
+            transform: translateY(0);
+        }
+
+        /* Cake Section */
+        .cake-section {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease;
+        }
+
+        .cake-section.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cake-image-container {
+            margin: 0 auto;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .cake-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: zoomIn 0.8s ease;
+            display: block;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .birthday-message {
+            color: white;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease 0.5s both;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .birthday-message h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+
+        .birthday-message p {
+            font-size: 24px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            line-height: 1.6;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Next Button */
+        .next-button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 35px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            animation: fadeInUp 1.5s ease both;
+        }
+
+        .next-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Slide Pages */
+        .slide-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+
+        .slide-image-container {
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            animation: slideIn 0.8s ease;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-message {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            max-width: 550px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .slide-message p {
+            font-size: 20px;
+            line-height: 1.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-style: italic;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav-button {
+            background: rgba(255,255,255,0.9);
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            background: white;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Page Indicator */
+        .page-indicator {
+            margin-top: 20px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .status-message {
+            color: white;
+            background: rgba(0,0,0,0.3);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .status-message.show {
+            display: block;
+        }
+
+        .status-message.error {
+            background: rgba(255,107,107,0.3);
+        }
+
+        .status-message.success {
+            background: rgba(107,255,107,0.3);
+        }
+
+        @media (max-width: 480px) {
+            .instruction {
+                font-size: 18px;
+            }
+            
+            .birthday-message {
+                padding: 20px;
+            }
+            
+            .birthday-message h1 {
+                font-size: 36px;
+            }
+            
+            .birthday-message p {
+                font-size: 20px;
+            }
+            
+            .cake-image-container {
+                max-width: 90%;
+            }
+
+            .slide-image-container {
+                max-width: 90%;
+            }
+
+            .slide-message {
+                padding: 20px;
+            }
+
+            .slide-message p {
+                font-size: 18px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 30px auto;
+            }
+
+            .nav-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Page 0: Candle Blowing -->
+        <div class="page active" id="page0">
+            <div class="candle-section" id="candleSection">
+                <h2 class="instruction">🎂 Make a wish and blow the candle! 🎂</h2>
+                <div class="candle">
+                    <div class="wick"></div>
+                    <div class="flame" id="flame"></div>
+                </div>
+                <div class="blow-indicator" id="blowIndicator"></div>
+                <button class="start-button" id="startButton">Start Experience</button>
+                <div class="status-message" id="statusMessage"></div>
+            </div>
+
+            <div class="cake-section" id="cakeSection">
+                <div class="cake-image-container">
+                    <img src="cake.jpg" alt="Birthday Cake" class="cake-image" id="cakeImage">
+                </div>
+                <div class="birthday-message">
+                    <h1>🎉 Happy 26th Birthday! 🎉</h1>
+                    <p>Wishing you an amazing year ahead!</p>
+                    <p style="margin-top: 15px; font-size: 20px;">✨ May all your dreams come true! ✨</p>
+                </div>
+                <button class="next-button" onclick="nextPage()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Page 1 -->
+        <div class="page" id="page1">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image1.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"I wish you more days when you fall asleep with a smile."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="page" id="page2">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image2.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"May your dreams come true faster than you have time to make them."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="page" id="page3">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image3.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"I wish you to meet people who understand you with just half a word."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4 -->
+        <div class="page" id="page4">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image4.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"I wish you moments that take your breath away."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5 -->
+        <div class="page" id="page5">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image5.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"I wish you to fall in love with life again every single day."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6 -->
+        <div class="page" id="page6">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image6.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"May you always have enough energy for what truly matters."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="nextPage()">Next →</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7 -->
+        <div class="page" id="page7">
+            <div class="slide-page">
+                <div class="slide-image-container">
+                    <img src="image7.jpg" alt="Beautiful Memory" class="slide-image">
+                </div>
+                <div class="slide-message">
+                    <p>"May each new year of your life be better than the last, not in numbers, but in how it feels."</p>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-button" onclick="prevPage()">← Back</button>
+                    <button class="nav-button" onclick="restartExperience()">🔄 Start Over</button>
+                </div>
+                <div class="page-indicator">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioContext;
+        let analyser;
+        let microphone;
+        let dataArray;
+        let blowDetected = false;
+        let isListening = false;
+        let currentPage = 0;
+        const totalPages = 8;
+
+        const candleSection = document.getElementById('candleSection');
+        const cakeSection = document.getElementById('cakeSection');
+        const flame = document.getElementById('flame');
+        const blowIndicator = document.getElementById('blowIndicator');
+        const statusMessage = document.getElementById('statusMessage');
+        const startButton = document.getElementById('startButton');
+        const cakeImage = document.getElementById('cakeImage');
+
+        startButton.addEventListener('click', initAudio);
+
+        cakeImage.onerror = function() {
+            console.error('Image failed to load');
+        };
+        
+        cakeImage.onload = function() {
+            console.log('Image loaded successfully');
+        };
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage++;
+                document.getElementById('page' + currentPage).classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                document.getElementById('page' + currentPage).classList.remove('active');
+                currentPage--;
+                document.getElementById('page' + currentPage).classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function restartExperience() {
+            document.getElementById('page' + currentPage).classList.remove('active');
+            currentPage = 0;
+            document.getElementById('page' + currentPage).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            cakeSection.classList.remove('show');
+            candleSection.classList.remove('hidden');
+            blowDetected = false;
+            isListening = false;
+            flame.style.opacity = '1';
+            flame.style.animation = 'flicker 0.3s infinite alternate';
+            startButton.style.display = 'block';
+            startButton.disabled = false;
+            startButton.textContent = 'Start Experience';
+        }
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (currentPage === 0) return;
+            
+            if (touchEndX < touchStartX - 50) {
+                nextPage();
+            }
+            if (touchEndX > touchStartX + 50) {
+                prevPage();
+            }
+        }
+
+        async function initAudio() {
+            if (isListening) return;
+
+            try {
+                startButton.disabled = true;
+                startButton.textContent = 'Initializing...';
+                
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Microphone not supported on this device');
+                }
+
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 512;
+                analyser.smoothingTimeConstant = 0.8;
+                
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    } 
+                });
+                
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+
+                isListening = true;
+                startButton.style.display = 'none';
+                showStatus('🎤 Listening... Blow into your mic!', 'success');
+                
+                setTimeout(() => {
+                    statusMessage.classList.remove('show');
+                }, 3000);
+
+                detectBlow();
+            } catch (err) {
+                console.error('Microphone access error:', err);
+                let errorMsg = 'Please allow microphone access and try again!';
+                
+                if (err.name === 'NotAllowedError') {
+                    errorMsg = '🔒 Microphone access denied. Please allow access in your browser settings.';
+                } else if (err.name === 'NotFoundError') {
+                    errorMsg = '🎤 No microphone found on this device.';
+                } else if (err.message.includes('not supported')) {
+                    errorMsg = '❌ Your browser doesn\'t support microphone access.';
+                }
+                
+                showStatus(errorMsg, 'error');
+                startButton.disabled = false;
+                startButton.textContent = 'Try Again';
+            }
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message show ' + type;
+        }
+
+        function detectBlow() {
+            if (blowDetected || !isListening) return;
+
+            analyser.getByteFrequencyData(dataArray);
+            
+            let sum = 0;
+            const lowFreqEnd = Math.floor(dataArray.length * 0.3);
+            
+            for (let i = 0; i < lowFreqEnd; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / lowFreqEnd;
+
+            if (average > 25) {
+                blowIndicator.classList.add('active');
+                setTimeout(() => blowIndicator.classList.remove('active'), 500);
+            }
+
+            if (average > 45 && !blowDetected) {
+                blowDetected = true;
+                blowOutCandle();
+            }
+
+            requestAnimationFrame(detectBlow);
+        }
+
+        function blowOutCandle() {
+            showStatus('🌬️ Perfect! Watch the magic happen...', 'success');
+            
+            if (microphone && microphone.mediaStream) {
+                microphone.mediaStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioContext) {
+                audioContext.close();
+            }
+
+            flame.style.animation = 'none';
+            flame.style.opacity = '0';
+            flame.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                candleSection.classList.add('hidden');
+                cakeSection.classList.add('show');
+                createConfetti();
+                statusMessage.classList.remove('show');
+            }, 800);
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1e2', '#ff9ff3'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-20px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = '0s';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 5000);
+                }, i * 30);
+            }
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (microphone && microphone.mediaStream) {
+                microphone.mediaStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
